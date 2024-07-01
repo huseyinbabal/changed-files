@@ -24,3 +24,7 @@ jobs:
       - name: Print changed files
         run: |
           echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
+      - name: Image tags change
+        run: |
+          git diff ${{ steps.get_previous_sha.outputs.sha }} HEAD .image_tags
