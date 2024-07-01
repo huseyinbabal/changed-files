@@ -45,7 +45,7 @@ jobs:
           IMAGE_TAGS_FILE_CHANGES=$(git diff $(git rev-parse HEAD~1) HEAD .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
           
           if [[ $IMAGE_TAGS_FILE_CHANGES ]]; then
-            IMAGES="$IMAGES\n$IMAGE_TAGS_FILE_CHANGES"
+            IMAGES="$IMAGES $IMAGE_TAGS_FILE_CHANGES"
           fi
           
           if [[ $IMAGES ]]; then
