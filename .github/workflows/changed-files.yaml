@@ -27,4 +27,4 @@ jobs:
 
       - name: Image tags change
         run: |
-          git diff ${{ steps.get_previous_sha.outputs.sha }} HEAD .image_tags
+          git diff $(git rev-parse HEAD~1) HEAD .image_tags
