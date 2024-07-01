@@ -54,3 +54,5 @@ jobs:
           else
             echo "images=[]" >> $GITHUB_OUTPUT
           fi
+          
+          echo $IMAGES
