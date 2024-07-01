@@ -20,3 +20,7 @@ jobs:
           dir_names: "true" # return only directory names
           separator: " " # multi-line output results in the error due to the new GITHUB OUTPUT variable
           dir_names_max_depth: 2 # return folder name in the format `container/<image-name>`
+
+      - name: Print changed files
+        run: |
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
