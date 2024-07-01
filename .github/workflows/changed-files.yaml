@@ -48,13 +48,13 @@ jobs:
           echo "IMAGE_TAGS_FILE_CHANGES=$IMAGE_TAGS_FILE_CHANGES"
           
           if [[ $IMAGE_TAGS_FILE_CHANGES ]]; then
-            IMAGES="$IMAGES\n$IMAGE_TAGS_FILE_CHANGES"
+            IMAGES="$IMAGES $IMAGE_TAGS_FILE_CHANGES"
           fi
           
           echo "FINAL_IMAGES=$IMAGES"
           
           if [[ $IMAGES ]]; then
-            IMAGES=$(echo $IMAGES | uniq | jq -Rnc '[inputs | {image:.}]')
+            IMAGES=$(echo $IMAGES | tr " " "\n" | uniq | jq -Rnc '[inputs | {image:.}]')
             echo "images=$IMAGES" >> $GITHUB_OUTPUT
           else
             echo "images=[]" >> $GITHUB_OUTPUT
