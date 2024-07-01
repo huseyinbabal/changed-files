@@ -28,3 +28,29 @@ jobs:
       - name: Image tags change
         run: |
           git diff $(git rev-parse HEAD~1) HEAD .image_tags
+
+      - name: Unique names of changed images
+        id: image-names
+        run: |
+          if [[ "${{ steps.changed-files.outputs.all_changed_files }}" ]]; then
+            DIRS="${{ steps.changed-files.outputs.all_changed_files }}"
+          else
+            DIRS="${{ steps.changed-files-provided-branch.outputs.all_changed_files }}"
+          fi
+          IMAGES=""
+          if [[ $DIRS ]]; then
+            IMAGES=$(echo $DIRS | tr " " "\n" | cut -d "/" -f 2)
+          fi
+          
+          IMAGE_TAGS_FILE_CHANGES=$(git diff $(git rev-parse HEAD~1) HEAD .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
+          
+          if [[ $IMAGE_TAGS_FILE_CHANGES ]]; then
+            IMAGES="$IMAGES\n$IMAGE_TAGS_FILE_CHANGES"
+          fi
+          
+          if [[ $IMAGES ]]; then
+            IMAGES=$(echo $IMAGES | uniq | jq -Rnc '[inputs | {image:.}]')
+            echo "images=$IMAGES" >> $GITHUB_OUTPUT
+          else
+            echo "images=[]" >> $GITHUB_OUTPUT
+          fi
