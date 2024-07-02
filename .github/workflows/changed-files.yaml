@@ -51,7 +51,7 @@ jobs:
           echo $BRANCH_NAME
           DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
           echo $DEFAULT_BRANCH
-          if [ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]; then
+          if [[ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]]; then
             # master merge
             IMAGE_TAGS_FILE_CHANGES=$(git diff $(git rev-parse HEAD~1) HEAD .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
           else
@@ -67,7 +67,7 @@ jobs:
           echo "FINAL_IMAGES=$IMAGES"
           
           if [[ $IMAGES ]]; then
-            IMAGES=$(echo $IMAGES | tr " " "\n" | uniq | jq -Rnc '[inputs | {image:.}]')
+            IMAGES=$(echo $IMAGES | tr " " "\n" | sort -u | jq -Rnc '[inputs | {image:.}]')
             echo "images=$IMAGES" >> $GITHUB_OUTPUT
           else
             echo "images=[]" >> $GITHUB_OUTPUT
