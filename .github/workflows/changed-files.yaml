@@ -3,9 +3,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-  repository_dispatch:
-    types:
-      - docker-build-command
+
 jobs:
   changed-files:
     runs-on: ubuntu-latest
