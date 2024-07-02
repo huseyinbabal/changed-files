@@ -46,12 +46,13 @@ jobs:
           echo "IMAGES=$IMAGES" 
           
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH_NAME" == "master" ]; then
+          DEFAULT_BRANCH=$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-)
+          if [ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]; then
             # master merge
             IMAGE_TAGS_FILE_CHANGES=$(git diff $(git rev-parse HEAD~1) HEAD .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
           else
             # pull request
-            IMAGE_TAGS_FILE_CHANGES=$(git diff HEAD origin/master .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
+            IMAGE_TAGS_FILE_CHANGES=$(git diff HEAD origin/$DEFAULT_BRANCH .image_tags | grep '^+[^+]' | cut -c2- | awk -F= '{print $1}')
           fi
           echo "IMAGE_TAGS_FILE_CHANGES=$IMAGE_TAGS_FILE_CHANGES"
           
