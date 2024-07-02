@@ -2,6 +2,7 @@ name: Changed files
 on:
   push:
     branches: [ master ]
+  pull_request:
 
 jobs:
   changed-files:
