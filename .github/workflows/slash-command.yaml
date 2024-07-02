@@ -1,0 +1,18 @@
+name: Slash Command Dispatch
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slash Command Dispatch
+        uses: peter-evans/slash-command-dispatch@v4
+        with:
+          # repo scoped PAT should be here
+          token: ${{ secrets.GH_TOKEN }}
+          permission: none
+          issue-type: pull-request
+          commands: docker-build
